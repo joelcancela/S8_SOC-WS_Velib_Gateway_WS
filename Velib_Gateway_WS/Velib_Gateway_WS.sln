@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velib_Gateway_WS", "Velib_Gateway_WS\Velib_Gateway_WS.csproj", "{6E133439-C2D6-457F-B032-797CC1BC6BE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClientForVelibGateway", "WPFClientForVelibGateway\WPFClientForVelibGateway.csproj", "{6489F18E-7A7C-4973-B284-634244F856E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7} = {6E133439-C2D6-457F-B032-797CC1BC6BE7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6489F18E-7A7C-4973-B284-634244F856E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6489F18E-7A7C-4973-B284-634244F856E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6489F18E-7A7C-4973-B284-634244F856E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6489F18E-7A7C-4973-B284-634244F856E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E7DB1B98-E39D-4CBA-9F26-F4E541FC519F}
+	EndGlobalSection
+EndGlobal
