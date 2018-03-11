@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Threading.Tasks;
 using Velib_Gateway_WS.Model;
 
 namespace Velib_Gateway_WS
@@ -14,10 +15,10 @@ namespace Velib_Gateway_WS
     {
 
         [OperationContract]
-        string[] GetStations(string city); // The client wants this
+        Task<string[]> GetStations(string city); // The client wants this
 
         [OperationContract]
-        string[] GetCities(); // Implied by the previous
+        Task<string[]> GetCities(); // Implied by the previous
 
         [OperationContract]
         int GetAvailableVelibs(string stationName); // The client wants this

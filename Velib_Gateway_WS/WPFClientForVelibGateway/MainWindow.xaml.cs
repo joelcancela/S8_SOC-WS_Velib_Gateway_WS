@@ -28,22 +28,22 @@ namespace WPFClientForVelibGateway
             fillCitiesListBox();
         }
 
-        private void fillCitiesListBox()
+        private async void fillCitiesListBox()
         { 
-            citiesListBox.ItemsSource = client.GetCities();
+            citiesListBox.ItemsSource = await client.GetCitiesAsync();
         }
 
-        private void citiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void citiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string citySelected = citiesListBox.SelectedItem.ToString();
-            stationsListBox.ItemsSource = client.GetStations(citySelected);
+            stationsListBox.ItemsSource = await client.GetStationsAsync(citySelected);
         }
 
-        private void stationsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void stationsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (stationsListBox.SelectedItem != null)
             {
-                int bikes_available = client.GetAvailableVelibs(stationsListBox.SelectedItem.ToString());
+                int bikes_available = await client.GetAvailableVelibsAsync(stationsListBox.SelectedItem.ToString());
                 available_bikes_label.Visibility = Visibility.Visible;
                 available_bikes_number.Visibility = Visibility.Visible;
                 available_bikes_number.Content = bikes_available.ToString();

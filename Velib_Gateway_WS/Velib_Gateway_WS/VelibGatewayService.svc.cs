@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Threading.Tasks;
 using Velib_Gateway_WS.Model;
 
 namespace Velib_Gateway_WS
@@ -27,14 +28,14 @@ namespace Velib_Gateway_WS
            
         }
 
-        public string[] GetCities()
+        public async Task<string[]> GetCities()
         {
-             return cache.getCities().ToArray();
+             return (await cache.getCitiesAsync()).ToArray();
         }
 
-        public string[] GetStations(string city)
+        public async Task<string[]> GetStations(string city)
         {
-            return cache.getStations(city).ToArray();
+            return (await cache.getStationsAsync(city)).ToArray();
         }
 
         public int GetAvailableVelibs(string stationName) // NOTE: ne peut pas être appelée en premier

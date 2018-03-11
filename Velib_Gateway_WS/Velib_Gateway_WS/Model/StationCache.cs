@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -28,19 +30,19 @@ namespace Velib_Gateway_WS.Model
             this.stationsUpdates = new Dictionary<string, DateTime>();
         }
 
-        public List<String> getCities()
+        public async Task<List<string>> getCitiesAsync()
         {
-            if (cities.Count == 0 || (DateTime.Now - lastCitiesUpdate).TotalSeconds > secondsToInvalidateCities)
+            if (cities.Count == 0 || (DateTime.Now - lastCitiesUpdate).TotalSeconds >= secondsToInvalidateCities)
             {
-                System.Diagnostics.Debug.WriteLine("Updating cities list..."+DateTime.Now);
-                updateCities();
+                Debug.WriteLine("Updating cities list..."+DateTime.Now);
+                await updateCities();
             }
             return cities;
         }
 
-        internal void updateCities()
+        internal async Task updateCities()
         {
-            string result = CallRestService("https://api.jcdecaux.com/vls/v1/contracts?apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
+            string result = await CallRestServiceAsync("https://api.jcdecaux.com/vls/v1/contracts?apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
             JArray jArray = JArray.Parse(result);
             List<String> list = new List<string>();
             foreach (JObject json in jArray.Children().Where(child => ((string)child["name"]).Length > 0).ToList())
@@ -53,16 +55,16 @@ namespace Velib_Gateway_WS.Model
         }
 
 
-        public List<String> getStations(string city)
+        public async Task<List<string>> getStationsAsync(string city)
         {
 
             DateTime lastUpdate = new DateTime();
             stationsUpdates.TryGetValue(city, out lastUpdate);
 
-            if (stations.Count == 0 || (DateTime.Now - lastUpdate).TotalSeconds > secondsToInvalidateStations)
+            if (stations.Count == 0 || (DateTime.Now - lastUpdate).TotalSeconds >= secondsToInvalidateStations)
             {
-                System.Diagnostics.Debug.WriteLine("Updating stations for "+city+"..." + DateTime.Now);
-                updateStations(city);
+                Debug.WriteLine("Updating stations for "+city+"..." + DateTime.Now);
+                await updateStations(city);
             }
 
             List<String> stationsName = new List<string>();
@@ -75,9 +77,9 @@ namespace Velib_Gateway_WS.Model
         }
 
 
-        internal void updateStations(string city)
+        internal async Task updateStations(string city)
         {
-            string result = CallRestService("https://api.jcdecaux.com/vls/v1/stations?contract=" + ToTitleCase(city) + "&apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
+            string result = await CallRestServiceAsync("https://api.jcdecaux.com/vls/v1/stations?contract=" + ToTitleCase(city) + "&apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
             List<Station> stationsCity = new JavaScriptSerializer().Deserialize<List<Station>>(result);
             stationsCity.Sort();
             stations.UnionWith(stationsCity);
@@ -105,6 +107,13 @@ namespace Velib_Gateway_WS.Model
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             return reader.ReadToEnd();
+        }
+
+        private async Task<string> CallRestServiceAsync(string url)
+        {
+            var myTask = Task.Factory.StartNew(() => CallRestService(url));
+            var result = await myTask;
+            return result;
         }
 
         private string ToTitleCase(string s)
