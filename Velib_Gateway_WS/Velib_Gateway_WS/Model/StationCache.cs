@@ -15,16 +15,26 @@ namespace Velib_Gateway_WS.Model
     {
         private List<String> cities;
         private HashSet<Station> stations;
+        private int secondsToInvalidateStations = 300; //5 minutes cooldown
+        private int secondsToInvalidateCities = 3600; //1 hour
+        private DateTime lastCitiesUpdate;
+        private Dictionary<string, DateTime> stationsUpdates;
 
         public StationCache()
         {
             this.cities = new List<String>();
             this.stations = new HashSet<Station>();
+            this.lastCitiesUpdate = new DateTime();
+            this.stationsUpdates = new Dictionary<string, DateTime>();
         }
 
         public List<String> getCities()
         {
-            //TODO handle refresh update / attribute last update ?
+            if (cities.Count == 0 || (DateTime.Now - lastCitiesUpdate).TotalSeconds > secondsToInvalidateCities)
+            {
+                System.Diagnostics.Debug.WriteLine("Updating cities list..."+DateTime.Now);
+                updateCities();
+            }
             return cities;
         }
 
@@ -39,13 +49,23 @@ namespace Velib_Gateway_WS.Model
             }
             list.Sort();
             cities = list;
+            lastCitiesUpdate = DateTime.Now;
         }
 
 
-        public List<String> getStations(string city) //TODO handle refresh update
+        public List<String> getStations(string city)
         {
+
+            DateTime lastUpdate = new DateTime();
+            stationsUpdates.TryGetValue(city, out lastUpdate);
+
+            if (stations.Count == 0 || (DateTime.Now - lastUpdate).TotalSeconds > secondsToInvalidateStations)
+            {
+                System.Diagnostics.Debug.WriteLine("Updating stations for "+city+"..." + DateTime.Now);
+                updateStations(city);
+            }
+
             List<String> stationsName = new List<string>();
-            //Insert control refresh here
             List<Station> stationsOfCity = stations.Where(station => station.contract_name.Equals(city, StringComparison.OrdinalIgnoreCase)).ToList();
             foreach (Station station in stationsOfCity)
             {
@@ -61,13 +81,11 @@ namespace Velib_Gateway_WS.Model
             List<Station> stationsCity = new JavaScriptSerializer().Deserialize<List<Station>>(result);
             stationsCity.Sort();
             stations.UnionWith(stationsCity);
+            stationsUpdates[city]= DateTime.Now;
         }
 
-        internal int getVelibs(string stationName)//TODO handle update
+        internal int getVelibs(string stationName)
         {
-            foreach(Station station in stations){
-                Console.WriteLine(station);
-            }
             Station stationToGet = stations.Where(station => station.name.Contains(stationName.ToUpper())).FirstOrDefault();
             if(stationToGet == null)
             {
@@ -83,7 +101,7 @@ namespace Velib_Gateway_WS.Model
         private string CallRestService(string url)
         {
             WebRequest request = WebRequest.Create(url);
-            WebResponse response = request.GetResponse(); //Exception to handle
+            WebResponse response = request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             return reader.ReadToEnd();

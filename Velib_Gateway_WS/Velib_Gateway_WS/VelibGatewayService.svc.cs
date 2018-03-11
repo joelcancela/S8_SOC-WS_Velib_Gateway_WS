@@ -29,24 +29,12 @@ namespace Velib_Gateway_WS
 
         public string[] GetCities()
         {
-            List<String> cities = cache.getCities();
-            if(cities.Count == 0)
-            {
-                cache.updateCities();
-                cities = cache.getCities();
-            }
-             return cities.ToArray();
+             return cache.getCities().ToArray();
         }
 
         public string[] GetStations(string city)
         {
-            List<String> stations = cache.getStations(city);
-            if(stations.Count == 0)
-            {
-                cache.updateStations(city);
-                stations = cache.getStations(city);
-            }
-            return stations.ToArray();
+            return cache.getStations(city).ToArray();
         }
 
         public int GetAvailableVelibs(string stationName) // NOTE: ne peut pas être appelée en premier
