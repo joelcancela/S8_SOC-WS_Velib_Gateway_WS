@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         Title="Client for VelibGatewayWS" Height="350" Width="525">
     <Grid>
-        <ListBox x:Name="citiesListBox" HorizontalAlignment="Left" Height="137" Margin="10,10,0,0" VerticalAlignment="Top" Width="194" SelectionChanged="citiesListBox_SelectionChanged"/>
-        <ListBox x:Name="stationsListBox" HorizontalAlignment="Left" Height="137" Margin="280,10,0,0" VerticalAlignment="Top" Width="227" SelectionChanged="stationsListBox_SelectionChanged"/>
-        <Label x:Name="available_bikes_label" Content="Nombre de vélos disponibles :" HorizontalAlignment="Left" Margin="13,170,0,0" VerticalAlignment="Top" Width="176" Visibility="Hidden"/>
-        <Label x:Name="available_bikes_number" Content="" HorizontalAlignment="Left" Margin="194,170,0,0" VerticalAlignment="Top" Width="47"/>
+        <ListBox x:Name="citiesListBox" HorizontalAlignment="Left" Height="137" Margin="10,71,0,0" VerticalAlignment="Top" Width="194" SelectionChanged="citiesListBox_SelectionChanged"/>
+        <ListBox x:Name="stationsListBox" HorizontalAlignment="Left" Height="137" Margin="280,71,0,0" VerticalAlignment="Top" Width="227" SelectionChanged="stationsListBox_SelectionChanged"/>
+        <Label x:Name="available_bikes_label" Content="Nombre de vélos disponibles :" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="176" Visibility="Hidden"/>
+        <Label x:Name="available_bikes_number" Content="" HorizontalAlignment="Left" Margin="191,239,0,0" VerticalAlignment="Top" Width="47"/>
+        <TextBox x:Name="CitySearchTextBox" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap" Text="Rechercher une ville..." VerticalAlignment="Top" Width="194" GotFocus="CitySearchTextBox_GotFocus" LostFocus="CitySearchTextBox_LostFocus" TextChanged="CitySearchTextBox_TextChanged"/>
+        <TextBox x:Name="StationSearchTextBox" HorizontalAlignment="Left" Height="23" Margin="280,26,0,0" TextWrapping="Wrap" Text="Rechercher une station..." VerticalAlignment="Top" Width="227" GotFocus="StationSearchTextBox_GotFocus" LostFocus="StationSearchTextBox_LostFocus" TextChanged="StationSearchTextBox_TextChanged"/>
 
     </Grid>
 </Window>

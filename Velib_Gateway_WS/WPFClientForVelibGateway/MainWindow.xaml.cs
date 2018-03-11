@@ -22,6 +22,10 @@ namespace WPFClientForVelibGateway
     public partial class MainWindow : Window
     {
         private VelibServiceClient client = new VelibServiceClient();
+        private string[] cities;
+        private string[] stations;
+        private string citiesSearchPlaceholder = "Rechercher une ville...";
+        private string stationsSearchPlaceholder = "Rechercher une station...";
         public MainWindow()
         {
             InitializeComponent();
@@ -29,14 +33,26 @@ namespace WPFClientForVelibGateway
         }
 
         private async void fillCitiesListBox()
-        { 
-            citiesListBox.ItemsSource = await client.GetCitiesAsync();
+        {
+            cities = await client.GetCitiesAsync();
+            foreach (string city in cities)
+            {
+                citiesListBox.Items.Add(city);
+            }
         }
 
         private async void citiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string citySelected = citiesListBox.SelectedItem.ToString();
-            stationsListBox.ItemsSource = await client.GetStationsAsync(citySelected);
+            if (citiesListBox.SelectedItem != null)
+            {
+                string citySelected = citiesListBox.SelectedItem.ToString();
+                stations = await client.GetStationsAsync(citySelected);
+                stationsListBox.Items.Clear();
+                foreach (string station in stations)
+                {
+                    stationsListBox.Items.Add(station);
+                }
+            }
         }
 
         private async void stationsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -53,6 +69,60 @@ namespace WPFClientForVelibGateway
                 available_bikes_label.Visibility = Visibility.Hidden;
                 available_bikes_number.Visibility = Visibility.Hidden;
                 available_bikes_number.Content = "";
+            }
+        }
+
+
+        private void CitySearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            CitySearchTextBox.Text = "";
+        }
+
+        private void CitySearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(CitySearchTextBox.Text))
+                CitySearchTextBox.Text = citiesSearchPlaceholder;
+        }
+
+        private void StationSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            StationSearchTextBox.Text = "";
+        }
+
+        private void StationSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(StationSearchTextBox.Text))
+                StationSearchTextBox.Text = stationsSearchPlaceholder;
+        }
+
+        private void CitySearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (CitySearchTextBox.Text != citiesSearchPlaceholder && cities != null)
+            {
+                citiesListBox.Items.Clear();
+                foreach (string str in cities)
+                {
+                    if (str.StartsWith(CitySearchTextBox.Text, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        citiesListBox.Items.Add(str);
+                    }
+                }
+            }
+        }
+
+        private void StationSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            if (StationSearchTextBox.Text != stationsSearchPlaceholder && stations != null)
+            {
+                stationsListBox.Items.Clear();
+                foreach (string str in stations)
+                {
+                    if (str.IndexOf(StationSearchTextBox.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    {
+                        stationsListBox.Items.Add(str);
+                    }
+                }
             }
         }
     }
