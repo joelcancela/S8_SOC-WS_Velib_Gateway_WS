@@ -38,9 +38,9 @@ namespace Velib_Gateway_WS
             return (await cache.getStationsAsync(city)).ToArray();
         }
 
-        public int GetAvailableVelibs(string stationName) // NOTE: ne peut pas être appelée en premier
+        public async Task<int> GetAvailableVelibs(string stationName) // NOTE: ne peut pas être appelée en premier
         {
-            return cache.getVelibs(stationName);
+            return await Task.Run(() => cache.getVelibs(stationName));
         }
     }
 }

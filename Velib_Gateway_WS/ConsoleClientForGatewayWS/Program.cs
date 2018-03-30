@@ -1,9 +1,11 @@
 ﻿using System;
 using VelibGatewayService;
-namespace ConsoleClientForGatewayWS
+
+namespace ConsoleClientForVelibGatewayWS
 {
     class Program
     {
+        static VelibServiceClient client = new VelibServiceClient();
         static void Main(string[] args)
         {
             Console.WriteLine("Console client for VelibGatewayWS (async)");
@@ -12,17 +14,17 @@ namespace ConsoleClientForGatewayWS
             string userinput = Console.ReadLine();
             while (true)
             {
-                process(userinput);
+                Process(userinput);
                 Console.Write("#> ");
                 userinput = Console.ReadLine();
             }
         }
 
-        static async void process(string input)
+        static async void Process(string input)
         {
             if (input.Contains("getcities"))
             {
-                String[] cities = await new VelibServiceClient().GetCitiesAsync();
+                String[] cities = await client.GetCitiesAsync();
                 foreach (string city in cities)
                 {
                     Console.Write(city + " ");
@@ -37,7 +39,7 @@ namespace ConsoleClientForGatewayWS
                 {
                     city = input.Split(" ")[1];
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("bad syntax, see help for details");
                 }
@@ -45,9 +47,9 @@ namespace ConsoleClientForGatewayWS
                 String[] stations = null;
                 try
                 {
-                   stations = await new VelibServiceClient().GetStationsAsync(city);
+                   stations = await client.GetStationsAsync(city);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("bad city provided");
                     Console.Write("#> ");
@@ -64,9 +66,9 @@ namespace ConsoleClientForGatewayWS
                 int bikes = 0;
                 try
                 {
-                    bikes = await new VelibServiceClient().GetAvailableVelibsAsync(input.Split("getbikes")[0]);
+                    bikes = await client.GetAvailableVelibsAsync(input.Split("getbikes")[0]);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("bad station provided");
                     Console.Write("#> ");
@@ -81,6 +83,7 @@ namespace ConsoleClientForGatewayWS
                 Console.WriteLine("getcities - Retrieves the available cities");
                 Console.WriteLine("getstations <city> - Lists the stations name for the city");
                 Console.WriteLine("getbikes <stationName> - Gets the number of the available bikes for the station provided");
+                Console.WriteLine("exit - Close the client");
             }
             else if (input.Contains("exit"))
             {

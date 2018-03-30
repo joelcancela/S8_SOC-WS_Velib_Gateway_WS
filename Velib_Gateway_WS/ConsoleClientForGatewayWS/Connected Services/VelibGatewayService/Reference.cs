@@ -13,7 +13,7 @@ namespace VelibGatewayService
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="VelibGatewayService.IVelibService")]
-    internal interface IVelibService
+    public interface IVelibService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IVelibService/GetStations", ReplyAction="http://tempuri.org/IVelibService/GetStationsResponse")]
@@ -27,13 +27,13 @@ namespace VelibGatewayService
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
-    internal interface IVelibServiceChannel : VelibGatewayService.IVelibService, System.ServiceModel.IClientChannel
+    public interface IVelibServiceChannel : VelibGatewayService.IVelibService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.0")]
-    internal partial class VelibServiceClient : System.ServiceModel.ClientBase<VelibGatewayService.IVelibService>, VelibGatewayService.IVelibService
+    public partial class VelibServiceClient : System.ServiceModel.ClientBase<VelibGatewayService.IVelibService>, VelibGatewayService.IVelibService
     {
         
     /// <summary>

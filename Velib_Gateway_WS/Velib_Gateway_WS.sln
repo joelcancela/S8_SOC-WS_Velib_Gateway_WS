@@ -11,6 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClientForVelibGatewayWS"
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClientForVelibGatewayWS", "ConsoleClientForGatewayWS\ConsoleClientForVelibGatewayWS.csproj", "{9BF8C25F-A8D3-4C84-9390-36FA8866CBBD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E133439-C2D6-457F-B032-797CC1BC6BE7} = {6E133439-C2D6-457F-B032-797CC1BC6BE7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

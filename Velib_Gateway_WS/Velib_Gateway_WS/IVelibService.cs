@@ -21,6 +21,6 @@ namespace Velib_Gateway_WS
         Task<string[]> GetCities(); // Implied by the previous
 
         [OperationContract]
-        int GetAvailableVelibs(string stationName); // The client wants this
+        Task<int> GetAvailableVelibs(string stationName); // The client wants this
     }
 }
