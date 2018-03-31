@@ -9,7 +9,7 @@ namespace ConsoleClientForVelibGatewayWS
         static void Main(string[] args)
         {
             Console.WriteLine("Console client for VelibGatewayWS (async)");
-            Console.WriteLine("see help for commands");
+            Console.WriteLine("type help for commands");
             Console.Write("#> ");
             string userinput = Console.ReadLine();
             while (true)
@@ -74,7 +74,7 @@ namespace ConsoleClientForVelibGatewayWS
                     Console.Write("#> ");
                     return;
                 }
-                Console.WriteLine("Available bikes for " + input.Split("getbikes")[0]+": "+bikes);
+                Console.WriteLine("Available bikes for station: '" + input.Split("getbikes ")[1]+"': "+bikes);
                 Console.Write("#> ");
             }
             else if (input.Contains("help"))
