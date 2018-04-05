@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Velib_Gateway_WS.VelibGatewayService" CodeBehind="VelibGatewayService.svc.cs" %>

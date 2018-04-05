@@ -1,36 +1,31 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
+using Velib_Gateway_WS;
 using Velib_Gateway_WS.Model;
 
-namespace Velib_Gateway_WS
+namespace VelibGatewayWSHost
 {
-   
-    public class VelibGatewayService : IVelibService
+    class VelibGatewayWSHostService : IVelibService
     {
-        private static StationCache cache;
+        public static StationCache cache;
 
-        private VelibGatewayService()
+        private VelibGatewayWSHostService()
         {
-            if(cache == null)
+            if (cache == null)
             {
                 cache = new StationCache();
+                cache.initCityAndStations();
             }
-           
+
         }
 
         public async Task<string[]> GetCities()
         {
-             return (await cache.getCitiesAsync()).ToArray();
+            return (await cache.getCitiesAsync()).ToArray();
         }
 
         public async Task<string[]> GetStations(string city)

@@ -7,9 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Script.Serialization;
+using VelibGatewayWSHost;
+using Timer = System.Timers.Timer;
 
 namespace Velib_Gateway_WS.Model
 {
@@ -21,6 +23,9 @@ namespace Velib_Gateway_WS.Model
         private int secondsToInvalidateCities = 3600; //1 hour
         private DateTime lastCitiesUpdate;
         private Dictionary<string, DateTime> stationsUpdates;
+        //Events (only one client for now)
+        private string stationSubscribe;
+        private Timer timer;
 
         public StationCache()
         {
@@ -121,5 +126,64 @@ namespace Velib_Gateway_WS.Model
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
         }
 
+        public void addSubscriber(Action<int> mBikes, string stationName)
+        {
+            Station stationopt = stations.Where(station => station.name.Contains(stationName.ToUpper()))
+                .FirstOrDefault();
+            if (stationopt != null)
+            {
+                timer = new Timer(3000);
+                timer.Elapsed += delegate { OnElapsed(stationopt); };
+                timer.AutoReset = false;
+                timer.Start();
+            }
+        }
+
+        private void OnElapsed(Station station)
+        {
+            VelibGatewayWsHostSubService.m_Bikes(station.available_bikes);
+        
+            timer.Start();
+        }
+
+        public string getStation(string stationName)
+        {
+            string stationOpt = stations.Where(station => station.name.Contains(stationName.ToUpper())).FirstOrDefault()
+                .name;
+            if (stationOpt == null)
+            {
+                return " ";
+            }
+            return stationOpt;
+        }
+
+        public void initCityAndStations()
+        {
+
+            string result = CallRestService("https://api.jcdecaux.com/vls/v1/contracts?apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
+            JArray jArray = JArray.Parse(result);
+            List<String> list = new List<string>();
+            foreach (JObject json in jArray.Children().Where(child => ((string)child["name"]).Length > 0).ToList())
+            {
+                list.Add(json["name"].ToString());
+            }
+            list.Sort();
+            cities = list;
+            lastCitiesUpdate = DateTime.Now;
+
+
+            foreach (string city in cities)
+            {
+                result = CallRestService("https://api.jcdecaux.com/vls/v1/stations?contract=" + ToTitleCase(city) + "&apiKey=5cd3ee38df5bf19f1035644298031b4642bdcb4c");
+                List<Station> stationsCity = new JavaScriptSerializer().Deserialize<List<Station>>(result);
+                stationsCity.Sort();
+                stations.UnionWith(stationsCity);
+                stationsUpdates[city] = DateTime.Now;
+            }
+
+
+
+
+        }
     }
 }

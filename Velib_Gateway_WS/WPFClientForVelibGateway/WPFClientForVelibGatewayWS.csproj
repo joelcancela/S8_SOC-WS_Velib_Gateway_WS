@@ -91,16 +91,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Connected Services\VelibGatewayWS\VelibGatewayService.wsdl" />
-    <None Include="Connected Services\VelibGatewayWS\VelibGatewayService.xsd">
+    <None Include="Connected Services\VelibGatewayWS\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\VelibGatewayWS\VelibGatewayService1.xsd">
+    <None Include="Connected Services\VelibGatewayWS\item1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\VelibGatewayWS\VelibGatewayService2.xsd">
+    <None Include="Connected Services\VelibGatewayWS\item2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\VelibGatewayWS\VelibGatewayWSHostService.wsdl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
