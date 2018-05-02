@@ -11,6 +11,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelibGatewayWSHost", "VelibGatewayWSHost\VelibGatewayWSHost.csproj", "{1779E08E-7725-4F06-8460-4DA32ED6085F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEventSubscriber", "ConsoleEventSubscriber\ConsoleEventSubscriber.csproj", "{83C6DB3E-99E6-43A1-B84A-4FF7FE501754}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1779E08E-7725-4F06-8460-4DA32ED6085F} = {1779E08E-7725-4F06-8460-4DA32ED6085F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
