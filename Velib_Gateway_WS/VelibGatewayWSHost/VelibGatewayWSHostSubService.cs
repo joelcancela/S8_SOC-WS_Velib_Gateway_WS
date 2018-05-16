@@ -11,7 +11,7 @@ namespace VelibGatewayWSHost
     class VelibGatewayWsHostSubService: IVelibServiceSub
     {
         //Events
-        public static Action<int> m_Bikes = delegate { };
+        public static Action<int> m_Bikes;
 
         public void SubscribeCalculatedEvent()
         {
@@ -19,6 +19,7 @@ namespace VelibGatewayWSHost
 
         public void SubscribeBikesNumber(string stationName)
         {
+            m_Bikes = delegate { };
             Console.WriteLine("A client subscribed to "+stationName);
             VelibGatewayWSHostService.cache.addSubscriber(m_Bikes,stationName);
             IVelibServiceSubEvents subscriber =

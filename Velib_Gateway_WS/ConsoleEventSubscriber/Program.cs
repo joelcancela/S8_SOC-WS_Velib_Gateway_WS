@@ -16,7 +16,8 @@ namespace ConsoleEventSubscriber
             VelibCallbackSink objsink = new VelibCallbackSink();
             InstanceContext iCntxt = new InstanceContext(objsink);
             VelibServiceSubReference.VelibServiceSubClient objClient = new VelibServiceSubReference.VelibServiceSubClient(iCntxt);
-            objClient.SubscribeBikesNumber("pomme");
+            objClient.SubscribeBikesNumber("pomme");//TOULOUSE
+            //objClient.SubscribeBikesNumber("03- VIEUX MARCHE");//ROUEN
             Console.ReadLine();
         }
     }

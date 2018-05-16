@@ -128,6 +128,10 @@ namespace Velib_Gateway_WS.Model
 
         public void addSubscriber(Action<int> mBikes, string stationName)
         {
+            if (timer!=null)
+            {
+                timer.Stop();
+            }
             Station stationopt = stations.Where(station => station.name.Contains(stationName.ToUpper()))
                 .FirstOrDefault();
             if (stationopt != null)
