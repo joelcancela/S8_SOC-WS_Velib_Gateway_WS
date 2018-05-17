@@ -134,7 +134,8 @@ namespace Velib_Gateway_WS.Model
             }
             Station stationopt = stations.Where(station => station.name.Contains(stationName.ToUpper()))
                 .FirstOrDefault();
-            if (stationopt != null)
+            VelibGatewayWsHostSubService.putSubscriber(stationopt.name,mBikes);
+            if (stationopt != null)//Simulation de l'update
             {
                 timer = new Timer(3000);
                 timer.Elapsed += delegate { OnElapsed(stationopt); };
@@ -145,7 +146,7 @@ namespace Velib_Gateway_WS.Model
 
         private void OnElapsed(Station station)
         {
-            VelibGatewayWsHostSubService.m_Bikes(station.available_bikes);
+            VelibGatewayWsHostSubService.triggerAllSubscribers(station.name, station.available_bikes);
         
             timer.Start();
         }

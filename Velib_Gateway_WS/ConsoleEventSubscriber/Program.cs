@@ -12,7 +12,6 @@ namespace ConsoleEventSubscriber
     {
         static void Main(string[] args)
         {
-            Thread.Sleep(5000);
             VelibCallbackSink objsink = new VelibCallbackSink();
             InstanceContext iCntxt = new InstanceContext(objsink);
             VelibServiceSubReference.VelibServiceSubClient objClient = new VelibServiceSubReference.VelibServiceSubClient(iCntxt);
