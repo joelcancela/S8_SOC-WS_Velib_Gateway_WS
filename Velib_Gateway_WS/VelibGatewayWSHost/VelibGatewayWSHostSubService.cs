@@ -34,7 +34,7 @@ namespace VelibGatewayWSHost
                 if (subscribers.TryGetValue(stationName, out subscribersOfTheStation))
                 {
                     subscribersOfTheStation.Add(action);
-                    subscribers.Add(stationName, subscribersOfTheStation);
+                    subscribers[stationName] = subscribersOfTheStation;
                 }
             }
             else
