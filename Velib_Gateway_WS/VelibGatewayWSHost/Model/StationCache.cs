@@ -25,7 +25,6 @@ namespace Velib_Gateway_WS.Model
         private Dictionary<string, DateTime> stationsUpdates;
         //Events (only one client for now)
         private string stationSubscribe;
-        private Timer timer;
 
         public StationCache()
         {
@@ -128,23 +127,20 @@ namespace Velib_Gateway_WS.Model
 
         public void addSubscriber(Action<int> mBikes, string stationName)
         {
-            if (timer!=null)
-            {
-                timer.Stop();
-            }
+   
             Station stationopt = stations.Where(station => station.name.Contains(stationName.ToUpper()))
                 .FirstOrDefault();
             VelibGatewayWsHostSubService.putSubscriber(stationopt.name,mBikes);
             if (stationopt != null)//Simulation de l'update
             {
-                timer = new Timer(3000);
-                timer.Elapsed += delegate { OnElapsed(stationopt); };
+                Timer timer = new Timer(3000);
+                timer.Elapsed += delegate { OnElapsed(timer, stationopt); };
                 timer.AutoReset = false;
                 timer.Start();
             }
         }
 
-        private void OnElapsed(Station station)
+        private void OnElapsed(Timer timer, Station station)
         {
             VelibGatewayWsHostSubService.triggerAllSubscribers(station.name, station.available_bikes);
         
