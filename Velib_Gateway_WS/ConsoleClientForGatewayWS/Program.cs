@@ -66,7 +66,8 @@ namespace ConsoleClientForVelibGatewayWS
                 int bikes = 0;
                 try
                 {
-                    bikes = await client.GetAvailableVelibsAsync(input.Split("getbikes")[0]);
+                    string stationName = input.Split("getbikes ")[1];
+                    bikes = await client.GetAvailableVelibsAsync(stationName);
                 }
                 catch (Exception)
                 {
